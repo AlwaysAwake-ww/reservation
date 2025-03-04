@@ -9,5 +9,4 @@ public interface KakaoTokenRepository extends JpaRepository<KakaoToken, Long> {
 
     Optional<KakaoToken> findByKakaoId(Long KakaoId);
 
-
 }

@@ -1,8 +1,8 @@
 package com.example.reservation.api.token.service;
 
 
-import com.example.reservation.global.config.properties.KakaoProperties;
 import com.example.reservation.global.config.properties.JwtProperties;
+import com.example.reservation.global.config.properties.KakaoProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

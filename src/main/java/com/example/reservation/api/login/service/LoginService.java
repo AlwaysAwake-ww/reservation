@@ -1,5 +1,7 @@
 package com.example.reservation.api.login.service;
 
+import com.example.reservation.api.User.entity.User;
+import com.example.reservation.api.User.repository.UserRepository;
 import com.example.reservation.api.login.entity.KakaoToken;
 import com.example.reservation.global.config.properties.KakaoProperties;
 import com.example.reservation.util.security.AES256Util;
@@ -15,6 +17,7 @@ import com.example.reservation.api.login.repository.KakaoTokenRepository;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +26,9 @@ public class LoginService {
     private final KakaoProperties kakaoProperties;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final AES256Util aes256Util;
     private final KakaoTokenRepository kakaoTokenRepository;
+    private final UserRepository userRepository;
+
 
     public String getKakaoLoginUri() {
         return "https://kauth.kakao.com/oauth/authorize?client_id="
@@ -56,10 +60,8 @@ public class LoginService {
                 Integer refreshTokenExpiresIn = (Integer) body.get("refresh_token_expires_in");
                 String tokenType = (String) body.get("token_type");
 
-                // 사용자 Kakao ID 추출
                 Long kakaoId = getKakaoId(accessToken);
-
-                // Access Token과 Refresh Token 저장
+                saveUser(kakaoId);
                 saveOrUpdateKakaoToken(kakaoId, accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, tokenType);
 
                 return accessToken;
@@ -70,8 +72,6 @@ public class LoginService {
             throw new RuntimeException("Failed to get access token.");
         }
     }
-
-
 
 
     public Map<String, Object> getUserInfo(String token) {
@@ -182,5 +182,12 @@ public class LoginService {
         kakaoTokenRepository.save(kakaoToken);
     }
 
+    private void saveUser(Long kakaoId){
+
+        User user = userRepository.findByKakaoId(kakaoId).orElseGet(()->User.builder()
+                        .kakaoId(kakaoId)
+                .build());
+        userRepository.save(user);
+    }
 
 }
