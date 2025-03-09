@@ -21,10 +21,8 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
