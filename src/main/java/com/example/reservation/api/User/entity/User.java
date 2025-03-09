@@ -21,6 +21,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "kakao_id", nullable = false)
     private Long kakaoId;
 
     @CreatedDate
