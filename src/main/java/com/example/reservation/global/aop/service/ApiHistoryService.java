@@ -8,7 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +34,13 @@ public class ApiHistoryService {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValueAsString(result);
+        String jsonResult = new ObjectMapper().writeValueAsString(result);
 
         ApiHistory apiHistory = ApiHistory.builder()
                 .url(requestUrl)
                 .ip(requestIp)
-                .result(result.toString())
+                .result(jsonResult)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         apiHistoryRepository.save(apiHistory);

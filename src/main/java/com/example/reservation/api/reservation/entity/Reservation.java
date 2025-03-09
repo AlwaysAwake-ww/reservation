@@ -1,13 +1,12 @@
 package com.example.reservation.api.reservation.entity;
 
-
-import com.example.reservation.api.User.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -15,21 +14,23 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-
+    private Long id;
+/*
     @ManyToOne
     private User user;
+*/
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ReservationStatus status = ReservationStatus.PENDING;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
