@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class User {
 
     @Id
@@ -21,9 +21,11 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "kakao_id", nullable = false)
     private Long kakaoId;
 
     @CreatedDate
+    @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;
 
     @Enumerated(EnumType.STRING)

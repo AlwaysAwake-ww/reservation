@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -13,12 +14,13 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class KakaoToken {
 
     @Id
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column(name = "kakao_id", nullable = false, unique = true)
     private Long kakaoId;
@@ -38,10 +40,13 @@ public class KakaoToken {
     @Column(name = "token_type", nullable = false)
     private String tokenType;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+
 
 }

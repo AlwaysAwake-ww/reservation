@@ -20,7 +20,7 @@ public class ApiHistoryAop {
 
     private final ApiHistoryService apiHistoryService;
 
-    @AfterReturning(value = "within(com.example.template.api..*)", returning = "result")
+    @AfterReturning(value = "within(com.example.reservation.api..*)", returning = "result")
     public void saveLog(JoinPoint joinPoint, Object result) throws JsonProcessingException {
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();

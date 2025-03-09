@@ -27,10 +27,10 @@ public class ApiHistory {
     @Column(name = "ip")
     private String ip;
 
-    @Column(name = "result")
+    @Column(name = "result", columnDefinition = "TEXT")
     private String result;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
 }
