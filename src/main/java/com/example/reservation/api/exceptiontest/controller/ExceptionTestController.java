@@ -29,7 +29,7 @@ public class ExceptionTestController {
     @GetMapping("business-exception-test")
     public String businessExceptionTest(String isError){
         if("true".equals(isError))
-            throw new BusinessException(ErrorCode.TEST);
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
         return "ok";
     }
 }
