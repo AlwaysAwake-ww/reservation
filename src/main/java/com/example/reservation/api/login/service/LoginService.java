@@ -6,6 +6,7 @@ import com.example.reservation.api.User.repository.UserRepository;
 import com.example.reservation.api.login.entity.KakaoToken;
 import com.example.reservation.api.login.repository.KakaoTokenRepository;
 import com.example.reservation.global.config.properties.KakaoProperties;
+import com.example.reservation.global.redis.listener.RedisListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
@@ -28,7 +29,7 @@ public class LoginService {
     private final ObjectMapper objectMapper;
     private final KakaoTokenRepository kakaoTokenRepository;
     private final UserRepository userRepository;
-
+    private final RedisListener redisListener;
     /**
      * 카카오 로그인 페이지 URL 생성
      */
@@ -77,6 +78,8 @@ public class LoginService {
                 Long kakaoId = getKakaoId(accessToken);
                 saveUser(kakaoId);
                 saveOrUpdateKakaoToken(kakaoId, accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, tokenType);
+
+                redisListener.saveAccessToken(kakaoId, accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, tokenType);
 
                 return accessToken;
             } catch (Exception e) {
