@@ -1,9 +1,7 @@
 package com.example.reservation.api.User.entity;
 
-import com.example.reservation.api.login.entity.KakaoToken;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
