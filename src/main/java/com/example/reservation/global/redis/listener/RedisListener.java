@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RedisListener {
@@ -35,8 +36,12 @@ public class RedisListener {
         tokenInfo.put("refreshExpiresIn", refreshExpiresIn);
         tokenInfo.put("tokenType", tokenType);
 
+
+        String jsonData = objectMapper.writeValueAsString(tokenInfo);
+
+
         // Map 자체로 저장 (RedisTemplate이 자동으로 직렬화 처리함)
-        redisTemplate.opsForValue().set(key, tokenInfo);
+        redisTemplate.opsForValue().set(key, jsonData);
 
         // 또는 JSON 문자열로 저장하는 경우
         // String jsonTokenInfo = objectMapper.writeValueAsString(tokenInfo);
@@ -54,4 +59,19 @@ public class RedisListener {
         }
         return null;
     }
+
+    public void printRedisData(){
+
+        Set<String> keys = redisTemplate.keys("*");
+
+
+        System.out.println("-------------- redis data ---------------");
+        for (String key : keys) {
+            String value = (String) redisTemplate.opsForValue().get(key);
+
+            System.out.println("Key: " + key + ", value: " + value);
+        }
+        System.out.println("-------------- ---------- ---------------");
+    }
+
 }

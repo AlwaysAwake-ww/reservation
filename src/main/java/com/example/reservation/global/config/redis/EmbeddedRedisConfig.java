@@ -11,7 +11,9 @@ import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 
 @RequiredArgsConstructor
 @Configuration
@@ -23,10 +25,12 @@ public class EmbeddedRedisConfig {
     @PostConstruct
     public void initRedis(){
 
-        String port = redisProperties.getPort();
-        redisServer = new RedisServer();
+        int port = Integer.parseInt(redisProperties.getPort());
+        redisServer = new RedisServer(port);
 
-        redisServer.start();
+        if(!isRedisRunning(port)){
+            redisServer.start();
+        }
 
     }
 
@@ -35,7 +39,7 @@ public class EmbeddedRedisConfig {
 
         redisServer.stop();
     }
-
+/*
     private boolean isRunning(Process process) {
         String line;
         StringBuilder pidInfo = new StringBuilder();
@@ -48,5 +52,16 @@ public class EmbeddedRedisConfig {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         return StringUtils.hasText(pidInfo.toString());
+    }*/
+
+    private boolean isRedisRunning(int port) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            serverSocket.setReuseAddress(true);
+            return false;  // 포트가 사용되지 않음 → Redis가 실행되지 않음
+        } catch (IOException e) {
+            return true;  // 포트가 사용 중임 → Redis가 이미 실행 중임
+        }
     }
 }
+
+

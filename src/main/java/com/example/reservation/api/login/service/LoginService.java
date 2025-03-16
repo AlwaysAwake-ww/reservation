@@ -80,6 +80,7 @@ public class LoginService {
                 saveOrUpdateKakaoToken(kakaoId, accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, tokenType);
 
                 redisListener.saveAccessToken(kakaoId, accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, tokenType);
+                redisListener.printRedisData();
 
                 return accessToken;
             } catch (Exception e) {
@@ -205,7 +206,7 @@ public class LoginService {
      * 사용자 저장 (새로운 유저이면 DB에 저장)
      */
     private void saveUser(Long kakaoId) {
-        User user = userRepository.findByKakaoId(kakaoId).orElseGet(() ->User.builder().kakaoId(kakaoId).createAt(LocalDateTime.now()).role(Role.USER).build());
+        User user = userRepository.findByKakaoId(kakaoId).orElseGet(() ->User.builder().kakaoId(kakaoId).createAt(LocalDateTime.now()).role(Role.ROLE_USER).build());
         userRepository.save(user);
     }
 }

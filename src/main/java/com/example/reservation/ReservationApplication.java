@@ -14,5 +14,4 @@ public class ReservationApplication {
 
 		System.out.println("@@ spring boot project started @@");
 	}
-
 }

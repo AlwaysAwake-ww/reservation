@@ -37,8 +37,15 @@ public class JwtTokenProvider {
         // userInfo에서 id 가져와서 subject로 설정
         Claims claims = Jwts.claims().setSubject(userInfo.get("id").toString());
 
+        Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
+        if(properties != null){
+            claims.put("nickname", properties.get("nickname"));
+            claims.put("profileImage", properties.get("profile_image"));
+        }
+/*
         claims.put("nickname", userInfo.get("nickname"));
-        claims.put("profileImage", userInfo.get("profile_image"));
+        claims.put("profileImage", userInfo.get("profile_image"));*/
+        claims.put("role", "ROLE_USER");
 
         ZonedDateTime now = ZonedDateTime.now();
         Instant issuedAt = now.toInstant();
