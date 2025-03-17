@@ -49,7 +49,7 @@ public class EmbeddedRedisConfig {
                 pidInfo.append(line);
             }
         } catch (Exception e) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new BusinessException(Err.INTERNAL_SERVER_ERRorCodeOR);
         }
         return StringUtils.hasText(pidInfo.toString());
     }*/
